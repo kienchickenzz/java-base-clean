@@ -1,4 +1,5 @@
 services:
+    # TODO: Đổi sang dùng SQL server
     db:
         hostname: db
         container_name: postgres_db

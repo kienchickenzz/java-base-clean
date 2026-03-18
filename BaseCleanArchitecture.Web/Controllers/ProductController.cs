@@ -1,11 +1,13 @@
+namespace BaseCleanArchitecture.Web.Controllers;
+
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
 using BaseCleanArchitecture.Application.Features.Common.Commands;
 using BaseCleanArchitecture.Application.Features.Common.Queries;
 using BaseCleanArchitecture.Application.Features.Products;
 using BaseCleanArchitecture.Domain.Entities;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
-namespace BaseCleanArchitecture.Web.Controllers;
 
 public class ProductController : BaseApiController
 {

@@ -1,7 +1,8 @@
+namespace BaseCleanArchitecture.Web.Controllers;
+
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BaseCleanArchitecture.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

@@ -1,11 +1,23 @@
 using BaseCleanArchitecture.Application;
-using BaseCleanArchitecture.Infrastructure;
+using BaseCleanArchitecture.Persistence;
+using BaseCleanArchitecture.Web.Configurations;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.AddConfigurations();
+
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddInfrastructurePersistence(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
