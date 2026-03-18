@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BaseCleanArchitecture.Application/BaseCleanArchitecture.Application.csproj" />
+  <Project Path="BaseCleanArchitecture.Domain/BaseCleanArchitecture.Domain.csproj" />
+  <Project Path="BaseCleanArchitecture.Infrastructure/BaseCleanArchitecture.Infrastructure.csproj" />
+  <Project Path="BaseCleanArchitecture.Web/BaseCleanArchitecture.Web.csproj" />
+</Solution>
