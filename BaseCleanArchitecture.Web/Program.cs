@@ -1,5 +1,6 @@
 using BaseCleanArchitecture.Application;
 using BaseCleanArchitecture.Persistence;
+using BaseCleanArchitecture.Persistence.Initialization;
 using BaseCleanArchitecture.Web.Configurations;
 using BaseCleanArchitecture.Web.Extensions;
 using BaseCleanArchitecture.Api.OpenApi;
@@ -26,8 +27,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Seeding
-app.Services.MigrationsDatabasesAsync();
+// Initialize database (migrate + seed)
+await app.Services.InitializeDatabaseAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

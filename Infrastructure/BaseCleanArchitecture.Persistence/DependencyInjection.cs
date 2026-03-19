@@ -41,17 +41,4 @@ public static class DependencyInjection
 
         return services;
     }
-
-    public static void MigrationsDatabasesAsync(this IServiceProvider services, CancellationToken cancellationToken = default)
-    {
-        // Create a new scope to retrieve scoped services
-        using var scope = services.CreateScope();
-
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        if (context.Database.GetPendingMigrations().Any())
-        {
-            context.Database.Migrate();
-        }
-    }
 }

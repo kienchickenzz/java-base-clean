@@ -1,39 +1,42 @@
-﻿namespace BaseCleanArchitecture.Identity.Initialization;
+// -----------------------------------------------------------------------------
+// <summary>
+//     Extension method để initialize database (migrate + seed).
+// </summary>
+// -----------------------------------------------------------------------------
+namespace BaseCleanArchitecture.Persistence.Initialization;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using BaseCleanArchitecture.Persistence;
 
-
-internal class ApplicationDbInitializer
+public static class ApplicationDbInitializer
 {
-    private readonly ApplicationDbContext _dbContext;
-    private readonly ApplicationDbSeeder _dbSeeder;
-    private readonly ILogger<ApplicationDbInitializer> _logger;
-
-    public ApplicationDbInitializer(ApplicationIdentityDbContext dbContext, ApplicationDbSeeder dbSeeder, ILogger<ApplicationDbInitializer> logger)
+    /// <summary>
+    /// Apply pending migrations và seed data.
+    /// </summary>
+    public static async Task InitializeDatabaseAsync(this IServiceProvider services, CancellationToken cancellationToken = default)
     {
-        _dbContext = dbContext;
-        _dbSeeder = dbSeeder;
-        _logger = logger;
-    }
+        using var scope = services.CreateScope();
 
-    public async Task InitializeAsync(CancellationToken cancellationToken)
-    {
-        if (_dbContext.Database.GetMigrations().Any())
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
+
+        if (!dbContext.Database.GetMigrations().Any())
         {
-            if ((await _dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
-            {
-                _logger.LogInformation("Applying Migrations for database");
-                await _dbContext.Database.MigrateAsync(cancellationToken);
-            }
+            return;
+        }
 
-            if (await _dbContext.Database.CanConnectAsync(cancellationToken))
-            {
-                _logger.LogInformation("Connection to database succeeded.");
-                await _dbSeeder.SeedDatabaseAsync(_dbContext, cancellationToken);
-            }
+        if ((await dbContext.Database.GetPendingMigrationsAsync(cancellationToken)).Any())
+        {
+            logger.LogInformation("Applying Migrations for database...");
+            await dbContext.Database.MigrateAsync(cancellationToken);
+        }
+
+        if (await dbContext.Database.CanConnectAsync(cancellationToken))
+        {
+            logger.LogInformation("Connection to database succeeded.");
+            await ApplicationDbSeeder.SeedDatabaseAsync(dbContext, logger, cancellationToken);
         }
     }
 }
