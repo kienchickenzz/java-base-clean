@@ -40,14 +40,11 @@ public sealed class Product : BaseEntityRoot
         return product;
     }
 
-    public void UpdateDetails(string name, string? description, string? imagePath, Guid categoryId)
+    public void UpdateDetails(string name, string? description)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Product name cannot be empty", nameof(name));
             
-        if (categoryId == Guid.Empty)
-             throw new ArgumentException("Category ID is required", nameof(categoryId));
-
         Name = name;
         Description = description;
     }

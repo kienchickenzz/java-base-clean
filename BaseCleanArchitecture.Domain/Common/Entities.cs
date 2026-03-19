@@ -6,13 +6,13 @@ public interface IAggregateRoot
 
 public abstract class BaseEntity : IAuditableEntity, ISoftDelete
 {
-    public Guid Id { get; init; }
-    public Guid CreatedBy { get; set; }
+    public int Id { get; init; }
+    public int CreatedBy { get; set; }
     public DateTime CreatedOn { get; set; }
-    public Guid? LastModifiedBy { get; set; }
+    public int? LastModifiedBy { get; set; }
     public DateTime? LastModifiedOn { get; set; }
     public DateTime? DeletedOn { get; set; }
-    public Guid? DeletedBy { get; set; }
+    public int? DeletedBy { get; set; }
 
     //protected BaseEntity(Guid id)
     //{

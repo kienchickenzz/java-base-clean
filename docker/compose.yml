@@ -1,25 +1,19 @@
 services:
-    # TODO: Đổi sang dùng SQL server
     db:
         hostname: db
-        container_name: postgres_db
-        image: postgres:16
+        container_name: mssql_db
+        image: mcr.microsoft.com/mssql/server:2022-latest
         restart: no
         networks:
         - server
         environment:
-            POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
-            POSTGRES_DB: ${DB_NAME}
+            ACCEPT_EULA: "Y"
+            SA_PASSWORD: ${DB_PASSWORD}
+            MSSQL_PID: "Express"
         ports:
-            - "5432:5432"
+            - "1433:1433"
         volumes:
-            - ./volume/postgres:/var/lib/postgresql/data
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U root -d db"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
+            - ./volume/mssql:/var/opt/mssql
 
 networks:
     server:
